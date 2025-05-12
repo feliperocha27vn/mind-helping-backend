@@ -1,14 +1,20 @@
 import { InMemoryUserRespository } from '@/in-memory/in-memory-user-repository'
 import { RegisterUseCase } from '@/use-cases/register'
 import { compare } from 'bcryptjs'
+import { beforeEach } from 'vitest'
 import { it, describe, expect } from 'vitest'
 
-describe('Register use case', () => {
-  it('deve fazer o hash da senha do usuário', async () => {
-    const professionalRepository = new InMemoryUserRespository()
-    const registerUseCase = new RegisterUseCase(professionalRepository)
+let professionalRepository: InMemoryUserRespository
+let sut: RegisterUseCase
 
-    const { professional } = await registerUseCase.execute({
+describe('Register use case', () => {
+  beforeEach(() => {
+    professionalRepository = new InMemoryUserRespository()
+    sut = new RegisterUseCase(professionalRepository)
+  })
+
+  it('deve fazer o hash da senha do usuário', async () => {
+    const { professional } = await sut.execute({
       nome_profissional: 'Ana Silva',
       data_nascimento: new Date('1985-07-15T00:00:00.000Z'),
       cpf: '12345678901',

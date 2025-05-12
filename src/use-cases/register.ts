@@ -1,6 +1,5 @@
 import type { ProfessionalRepository } from '@/repositories/professional-repository'
 import { hash } from 'bcryptjs'
-import { randomUUID } from 'node:crypto'
 import type { Profissional } from 'generated/prisma'
 
 interface RegisterUseCaseRequest {

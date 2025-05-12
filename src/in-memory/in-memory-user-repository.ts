@@ -1,12 +1,23 @@
 import type { ProfessionalRepository } from '@/repositories/professional-repository'
+import { randomUUID } from 'node:crypto'
 import type { Prisma, Profissional } from 'generated/prisma'
 
 export class InMemoryUserRespository implements ProfessionalRepository {
   public items: Profissional[] = []
 
+  async findByEmail(email: string) {
+    const professional = this.items.find(item => item.email === email)
+
+    if (!professional) {
+      return null
+    }
+
+    return professional
+  }
+
   async create(data: Prisma.ProfissionalCreateInput) {
-    const user = {
-      id_profissional: '1',
+    const professional = {
+      id_profissional: randomUUID(),
       nome_profissional: data.nome_profissional ?? null,
       data_nascimento: data.data_nascimento
         ? new Date(data.data_nascimento)
@@ -26,8 +37,8 @@ export class InMemoryUserRespository implements ProfessionalRepository {
       is_social: data.is_social ?? null,
     }
 
-    this.items.push(user)
+    this.items.push(professional)
 
-    return user
+    return professional
   }
 }
