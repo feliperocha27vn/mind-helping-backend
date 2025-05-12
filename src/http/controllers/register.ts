@@ -1,7 +1,6 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-import { PrismaProfessionalsRepository } from '@/repositories/prisma/prisma-professionals-repository'
-import { RegisterUseCase } from '@/use-cases/register'
+import { makeRegisterUseCase } from '@/factories/make-register-use-case'
 
 export const register: FastifyPluginAsyncZod = async app => {
   app.post(
@@ -48,8 +47,7 @@ export const register: FastifyPluginAsyncZod = async app => {
         is_social,
       } = request.body
 
-      const prismaProfessionalsRepository = new PrismaProfessionalsRepository()
-      const registerUseCase = new RegisterUseCase(prismaProfessionalsRepository)
+      const registerUseCase = makeRegisterUseCase()
 
       try {
         registerUseCase.execute({

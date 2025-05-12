@@ -1,33 +1,12 @@
+import { InMemoryUserRespository } from '@/in-memory/in-memory-user-repository'
 import { RegisterUseCase } from '@/use-cases/register'
 import { compare } from 'bcryptjs'
 import { it, describe, expect } from 'vitest'
 
 describe('Register use case', () => {
   it('deve fazer o hash da senha do usuário', async () => {
-    const registerUseCase = new RegisterUseCase({
-      async create(data) {
-        return {
-          id_profissional: '1',
-          nome_profissional: data.nome_profissional ?? null,
-          data_nascimento: data.data_nascimento
-            ? new Date(data.data_nascimento)
-            : null,
-          cpf: data.cpf ?? null,
-          crp: data.crp ?? null,
-          logradouro: data.logradouro ?? null,
-          bairro: data.bairro ?? null,
-          numero: data.numero ?? null,
-          complemento: data.complemento ?? null,
-          cep: data.cep ?? null,
-          cidade: data.cidade ?? null,
-          uf: data.uf ?? null,
-          telefone: data.telefone ?? null,
-          email: data.email ?? null,
-          senha_hash: data.senha_hash,
-          is_social: data.is_social ?? null,
-        }
-      },
-    })
+    const professionalRepository = new InMemoryUserRespository()
+    const registerUseCase = new RegisterUseCase(professionalRepository)
 
     const { professional } = await registerUseCase.execute({
       nome_profissional: 'Ana Silva',
